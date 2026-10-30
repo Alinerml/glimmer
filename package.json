@@ -4,6 +4,7 @@
   "version": "1.0.2",
   "description": "微光 · 把日子，过成星河。一个本地优先的多端微记录应用。",
   "author": "Glimmer",
+  "license": "MIT",
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {

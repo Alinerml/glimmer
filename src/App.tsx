@@ -20,6 +20,7 @@ import {
   saveOnboarded,
 } from './lib/data';
 import { getStreak, getTodayCount } from './lib/date';
+import { buildDemoEntries, isDemoRequested } from './lib/demo';
 import type { Glimmer, MoodId } from './types';
 
 type SheetKind = 'sync' | 'settings' | null;
@@ -36,12 +37,26 @@ function readHashCode(): string {
 }
 
 export default function App() {
-  const [entries, setEntries] = useState<Glimmer[]>(() => loadEntries());
+  const demo = isDemoRequested();
+  const exitDemoHref = useMemo(() => {
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('demo');
+      url.hash = '';
+      return `${url.pathname}${url.search}`;
+    } catch {
+      return './';
+    }
+  }, []);
+
+  const [entries, setEntries] = useState<Glimmer[]>(() =>
+    demo ? buildDemoEntries() : loadEntries(),
+  );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [sheet, setSheet] = useState<SheetKind>(null);
-  const [incomingCode, setIncomingCode] = useState(readHashCode);
+  const [incomingCode, setIncomingCode] = useState(() => (demo ? '' : readHashCode()));
   const [showOnboarding, setShowOnboarding] = useState(
-    () => !readHashCode() && !loadOnboarded(),
+    () => !demo && !readHashCode() && !loadOnboarded(),
   );
   const [toast, setToast] = useState<string | null>(null);
   const [latestId, setLatestId] = useState<string | null>(null);
@@ -75,12 +90,14 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (demo) return;
     saveEntries(entries);
-  }, [entries]);
+  }, [demo, entries]);
 
   useEffect(() => {
+    if (demo) return;
     saveCalmMotion(calmMotion);
-  }, [calmMotion]);
+  }, [calmMotion, demo]);
 
   useEffect(() => {
     return () => {
@@ -147,9 +164,9 @@ export default function App() {
       const entry = makeEntry(text, mood);
       setEntries((current) => [...current, entry]);
       markLatest(entry.id);
-      notify('一束微光，亮起来了');
+      notify(demo ? '演示数据不会被保存' : '一束微光，亮起来了');
     },
-    [markLatest, notify],
+    [demo, markLatest, notify],
   );
 
   const handleDelete = useCallback(
@@ -181,12 +198,12 @@ export default function App() {
         setEntries(merged.entries);
         const newest = merged.entries[merged.entries.length - 1];
         if (newest) markLatest(newest.id);
-        saveOnboarded();
+        if (!demo) saveOnboarded();
         setShowOnboarding(false);
       }
       return merged.added;
     },
-    [entries, markLatest],
+    [demo, entries, markLatest],
   );
 
   const handleImportJSON = useCallback(
@@ -196,12 +213,12 @@ export default function App() {
       const merged = mergeEntries(entries, incoming);
       if (merged.added > 0) {
         setEntries(merged.entries);
-        saveOnboarded();
+        if (!demo) saveOnboarded();
         setShowOnboarding(false);
       }
       return merged.added;
     },
-    [entries],
+    [demo, entries],
   );
 
   const handleClear = useCallback(() => {
@@ -224,7 +241,7 @@ export default function App() {
 
   const finishOnboarding = () => {
     setShowOnboarding(false);
-    saveOnboarded();
+    if (!demo) saveOnboarded();
   };
 
   const openSync = () => {
@@ -258,6 +275,17 @@ export default function App() {
         <i />
       </div>
       <div className="grain" aria-hidden="true" />
+
+      {demo && (
+        <aside className="demo-banner" role="note" aria-label="演示模式说明">
+          <span className="demo-badge">演示模式</span>
+          <span className="demo-banner-note demo-banner-note--long">
+            示例数据 · 不会保存或覆盖你的记录
+          </span>
+          <span className="demo-banner-note demo-banner-note--short">示例数据 · 不会保存</span>
+          <a href={exitDemoHref}>进入正常使用 →</a>
+        </aside>
+      )}
 
       <header className="topbar">
         <div className="brand">

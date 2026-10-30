@@ -200,7 +200,10 @@ export function buildShareLink(code: string): string {
   const { protocol, origin, pathname } = window.location;
   if (protocol !== 'http:' && protocol !== 'https:') return '';
   if (origin === 'https://localhost') return '';
-  return `${origin}${pathname}#s=${code}`;
+  const params = new URLSearchParams(window.location.search);
+  params.delete('demo');
+  const query = params.toString();
+  return `${origin}${pathname}${query ? `?${query}` : ''}#s=${code}`;
 }
 
 export function loadOnboarded(): boolean {

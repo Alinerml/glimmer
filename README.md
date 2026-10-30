@@ -62,6 +62,7 @@
 - 星语码导出 / 导入（文本、链接、二维码）
 - JSON 完整备份导出 / 导入
 - PWA 离线可用、可安装到桌面 / 主屏幕
+- `?demo=1` 演示模式：预置 14 束示例微光，不写入真实数据
 - 「减少动态效果」开关，并遵循系统 `prefers-reduced-motion`
 - Web、Electron、Android、iOS 自适应布局
 - 无账号、无后端、无追踪
@@ -278,8 +279,11 @@ git push origin v1.0.2
 官网和在线体验由同一条 GitHub Actions 工作流自动部署到 GitHub Pages：
 
 - 官网：<https://alinerml.github.io/glimmer/>
-- 在线体验：<https://alinerml.github.io/glimmer/app/>
+- 在线体验（演示模式）：<https://alinerml.github.io/glimmer/app/?demo=1>
+- 正常 Web 版：<https://alinerml.github.io/glimmer/app/>
 - 版本发布：<https://github.com/Alinerml/glimmer/releases>
+
+带 `?demo=1` 打开时会直接加载 14 束内存里的示例微光、跳过首次引导，并在顶部显示「演示模式 · 示例数据不会保存」的提示。演示模式不会读取、写入或覆盖 `localStorage` 中的真实记录；点击提示里的「进入正常使用」即可回到普通 Web 版。官网的「在线体验」按钮默认指向演示模式，方便第一次访问的人立即看到完整星空。
 
 站点文件位于 `docs/`，页面为纯静态 HTML / CSS / JavaScript，不需要额外的构建步骤。主分支每次推送都会运行「官网」工作流：
 
@@ -288,6 +292,12 @@ git push origin v1.0.2
 3. 把 `dist/` 部署到 `/app/`，作为在线体验。
 
 首次启用时，在仓库 `Settings → Pages` 中把来源设为 **GitHub Actions** 即可。官网里的下载按钮会读取最新 Release 的资源地址和文件大小；如果 GitHub API 暂时不可用，会回退到「全部版本」页面。
+
+### 分享封面与搜索
+
+- 分享封面：`docs/assets/og-cover.png`（1200 × 630），用于官网的 Open Graph / Twitter Card。
+- 搜索引擎：`docs/robots.txt` 与 `docs/sitemap.xml` 会随官网一起部署，sitemap 包含官网和 `/app/`。
+- GitHub 仓库的社交预览图需要在 `Settings → Social preview` 手动上传同一张 `og-cover.png`；GitHub 目前没有公开的 REST API 可以设置它。
 
 ---
 
@@ -361,6 +371,7 @@ VITE_SHARE_BASE_URL=https://glimmer.example.com/ npm run cap:sync
 │  │  └─ Icons.tsx             # 内联 SVG 图标
 │  ├─ lib/
 │  │  ├─ data.ts               # 本地存储、合并、压缩/解压
+│  │  ├─ demo.ts               # ?demo=1 内存示例数据
 │  │  ├─ constellation.ts      # 星点布局与连线算法
 │  │  ├─ date.ts               # 日期、连续天数
 │  │  ├─ platform.ts           # 判断 Capacitor 原生壳
@@ -381,6 +392,7 @@ VITE_SHARE_BASE_URL=https://glimmer.example.com/ npm run cap:sync
 │  └─ icons/                   # 192 / 512 / maskable / apple-touch
 ├─ docs/                       # 官网静态站点（GitHub Pages）
 ├─ .github/workflows/          # 自动发布 + 官网部署
+├─ LICENSE                     # MIT 许可证
 ├─ capacitor.config.ts
 ├─ vite.config.ts
 ├─ .env.example                # 可选：配置正式分享地址
@@ -440,6 +452,9 @@ VITE_SHARE_BASE_URL=https://glimmer.example.com/ npm run cap:sync
 - 分享链接、二维码；模拟 Capacitor 环境时禁用链接并回退为星语码二维码
 - Electron 壳启动、记录写入、Node 能力隔离
 - 桌面 1440 / 移动 390 两种布局截图检查
+- `?demo=1`：14 束示例微光、连续 5 天、跳过引导、演示横幅与退出入口
+- 演示模式下新增 / 刷新 / 退出均不改变既有 `localStorage` 真实记录
+- 1200 × 630 分享封面、Open Graph / Twitter Card、`robots.txt`、`sitemap.xml` 与 Lighthouse SEO 检查
 - Windows NSIS 安装包构建成功；`release/win-unpacked/微光.exe` 启动并显示主窗口
 - Capacitor `cap sync`：Web 产物已同步进 Android / iOS 工程
 - Android / iOS 应用名、包名、深色主题、图标与启动画面配置
@@ -463,4 +478,12 @@ VITE_SHARE_BASE_URL=https://glimmer.example.com/ npm run cap:sync
 
 微光用「一句话 → 一颗星 → 一段可带走的星语码」，把跨端同步这件通常需要账号和后端的事情，做成了一次轻量、私密、带一点浪漫的仪式。
 
+---
+
 把日子，过成星河。
+
+---
+
+## 许可证
+
+本项目采用 [MIT License](./LICENSE) 开源。你可以自由使用、修改和分发，但请保留版权声明与许可证文本。
