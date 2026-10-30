@@ -273,6 +273,24 @@ git push origin v1.0.2
 
 ---
 
+## 官网
+
+官网和在线体验由同一条 GitHub Actions 工作流自动部署到 GitHub Pages：
+
+- 官网：<https://alinerml.github.io/glimmer/>
+- 在线体验：<https://alinerml.github.io/glimmer/app/>
+- 版本发布：<https://github.com/Alinerml/glimmer/releases>
+
+站点文件位于 `docs/`，页面为纯静态 HTML / CSS / JavaScript，不需要额外的构建步骤。主分支每次推送都会运行「官网」工作流：
+
+1. 构建 Web / PWA 到 `dist/`；
+2. 把 `docs/` 部署到站点根目录；
+3. 把 `dist/` 部署到 `/app/`，作为在线体验。
+
+首次启用时，在仓库 `Settings → Pages` 中把来源设为 **GitHub Actions** 即可。官网里的下载按钮会读取最新 Release 的资源地址和文件大小；如果 GitHub API 暂时不可用，会回退到「全部版本」页面。
+
+---
+
 ## 数据与隐私
 
 - 数据存储键：`glimmer.entries.v1`（微光）、`glimmer.onboarded.v1`（引导状态）、`glimmer.calm-motion.v1`（动效偏好）。
@@ -361,6 +379,8 @@ VITE_SHARE_BASE_URL=https://glimmer.example.com/ npm run cap:sync
 ├─ public/
 │  ├─ favicon.svg
 │  └─ icons/                   # 192 / 512 / maskable / apple-touch
+├─ docs/                       # 官网静态站点（GitHub Pages）
+├─ .github/workflows/          # 自动发布 + 官网部署
 ├─ capacitor.config.ts
 ├─ vite.config.ts
 ├─ .env.example                # 可选：配置正式分享地址
