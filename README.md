@@ -300,7 +300,14 @@ git push origin v1.0.2
 
 - 分享封面：`docs/assets/og-cover.png`（1200 × 630），用于官网的 Open Graph / Twitter Card。
 - 搜索引擎：`docs/robots.txt` 与 `docs/sitemap.xml` 会随官网一起部署，sitemap 包含官网和 `/app/`。
-- GitHub 仓库的社交预览图需要在 `Settings → Social preview` 手动上传同一张 `og-cover.png`；GitHub 目前没有公开的 REST API 可以设置它。
+- GitHub 仓库的社交预览图需要在 `Settings → Social preview` 手动上传同一张 `og-cover.png`；GitHub 目前没有公开的 REST API 可以设置它。它只影响 GitHub 仓库链接，不等同于网站在微信里的分享卡片。
+
+### 微信分享
+
+- 微信普通网页分享会读取页面 `<title>` 和页面中第一张不小于 300 × 300 的图片。官网首页和应用壳都在 `<body>` 顶部放了一张隐藏的 `icon-512.png`，用于生成方形缩略图。
+- 推荐分享官网：<https://alinerml.github.io/glimmer/>；如果想让对方直接看到示例星空，分享 <https://alinerml.github.io/glimmer/app/?demo=1>。`/demo/` 是缓存清理入口，不建议作为分享链接。
+- 微信分享的描述通常显示链接本身。要自定义描述，需要已认证公众号的 JS-SDK、自有域名（配置 JS 接口安全域名）以及服务端签名；纯静态 GitHub Pages 无法安全保存 AppSecret，也无法把 `alinerml.github.io` 配置为自有安全域名。
+- 微信会缓存链接卡片。修改页面后测试时，可在链接末尾临时加 `?v=2` 之类的参数，避免继续看到旧缩略图。
 
 ---
 
