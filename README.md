@@ -62,7 +62,7 @@
 - 星语码导出 / 导入（文本、链接、二维码）
 - JSON 完整备份导出 / 导入
 - PWA 离线可用、可安装到桌面 / 主屏幕
-- `?demo=1` 演示模式：预置 14 束示例微光，不写入真实数据
+- `?demo=1` 演示模式：预置 14 束示例微光，不写入真实数据（推荐从 `/demo/` 进入）
 - 「减少动态效果」开关，并遵循系统 `prefers-reduced-motion`
 - Web、Electron、Android、iOS 自适应布局
 - 无账号、无后端、无追踪
@@ -279,11 +279,14 @@ git push origin v1.0.2
 官网和在线体验由同一条 GitHub Actions 工作流自动部署到 GitHub Pages：
 
 - 官网：<https://alinerml.github.io/glimmer/>
-- 在线体验（演示模式）：<https://alinerml.github.io/glimmer/app/?demo=1>
+- 在线体验（推荐入口）：<https://alinerml.github.io/glimmer/demo/>
+- 直接进入演示：<https://alinerml.github.io/glimmer/app/?demo=1>
 - 正常 Web 版：<https://alinerml.github.io/glimmer/app/>
 - 版本发布：<https://github.com/Alinerml/glimmer/releases>
 
-带 `?demo=1` 打开时会直接加载 14 束内存里的示例微光、跳过首次引导，并在顶部显示「演示模式 · 示例数据不会保存」的提示。演示模式不会读取、写入或覆盖 `localStorage` 中的真实记录；点击提示里的「进入正常使用」即可回到普通 Web 版。官网的「在线体验」按钮默认指向演示模式，方便第一次访问的人立即看到完整星空。
+`/demo/` 是独立的演示入口，位于 `/app/` 的 Service Worker 作用域之外。它会先注销旧版应用注册的 Service Worker、清理旧缓存，再带上时间戳跳转到 `/app/?demo=1`，避免浏览器继续使用旧版 JS 而看不到示例星空。官网的「在线体验」按钮默认指向这个入口。
+
+带 `?demo=1` 打开时会直接加载 14 束内存里的示例微光、跳过首次引导，并在顶部显示「演示模式 · 示例数据不会保存」的提示。演示模式不会读取、写入或覆盖 `localStorage` 中的真实记录；点击提示里的「进入正常使用」即可回到普通 Web 版。直接访问 `?demo=1` 仍然是有效的备用入口；如果浏览器缓存了旧版本，先访问 `/demo/` 或强制刷新即可。
 
 站点文件位于 `docs/`，页面为纯静态 HTML / CSS / JavaScript，不需要额外的构建步骤。主分支每次推送都会运行「官网」工作流：
 
@@ -391,6 +394,7 @@ VITE_SHARE_BASE_URL=https://glimmer.example.com/ npm run cap:sync
 │  ├─ favicon.svg
 │  └─ icons/                   # 192 / 512 / maskable / apple-touch
 ├─ docs/                       # 官网静态站点（GitHub Pages）
+│  └─ demo/index.html          # 演示入口：清理旧缓存后跳转
 ├─ .github/workflows/          # 自动发布 + 官网部署
 ├─ LICENSE                     # MIT 许可证
 ├─ capacitor.config.ts
@@ -453,6 +457,7 @@ VITE_SHARE_BASE_URL=https://glimmer.example.com/ npm run cap:sync
 - Electron 壳启动、记录写入、Node 能力隔离
 - 桌面 1440 / 移动 390 两种布局截图检查
 - `?demo=1`：14 束示例微光、连续 5 天、跳过引导、演示横幅与退出入口
+- `/demo/`：独立于应用缓存作用域的演示入口，先注销旧 Service Worker、清理缓存再进入
 - 演示模式下新增 / 刷新 / 退出均不改变既有 `localStorage` 真实记录
 - 1200 × 630 分享封面、Open Graph / Twitter Card、`robots.txt`、`sitemap.xml` 与 Lighthouse SEO 检查
 - Windows NSIS 安装包构建成功；`release/win-unpacked/微光.exe` 启动并显示主窗口

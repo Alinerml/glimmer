@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#04060d" />
+    <title>微光 · 演示模式</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #eef4ff;
+        --muted: #8b99b3;
+        --accent: #93eddc;
+        --line: rgba(181, 207, 255, 0.14);
+        --serif: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
+        --sans: "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+      }
+      body {
+        display: grid;
+        min-height: 100dvh;
+        place-items: center;
+        padding: 24px;
+        color: var(--ink);
+        font-family: var(--sans);
+        background:
+          radial-gradient(ellipse 60% 50% at 50% -10%, rgba(60, 100, 180, 0.32), transparent 70%),
+          radial-gradient(ellipse 40% 40% at 15% 110%, rgba(76, 190, 175, 0.1), transparent 68%),
+          linear-gradient(160deg, #04060d, #070c18 55%, #03050a);
+      }
+      .card {
+        width: min(460px, 100%);
+        padding: 38px 32px 32px;
+        text-align: center;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at 30% 0%, rgba(147, 237, 220, 0.08), transparent 42%),
+          rgba(10, 17, 31, 0.72);
+        box-shadow:
+          0 30px 90px rgba(0, 0, 0, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+      .mark {
+        display: grid;
+        width: 62px;
+        height: 62px;
+        margin: 0 auto 22px;
+        place-items: center;
+        color: var(--accent);
+        border: 1px solid rgba(180, 217, 255, 0.18);
+        border-radius: 20px;
+        background:
+          radial-gradient(circle at 30% 20%, rgba(147, 237, 220, 0.16), transparent 58%),
+          linear-gradient(150deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.015));
+        box-shadow: 0 16px 46px rgba(54, 98, 180, 0.18);
+      }
+      .mark svg {
+        filter: drop-shadow(0 0 10px rgba(147, 237, 220, 0.5));
+      }
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--accent);
+        font-size: 10.5px;
+        font-weight: 600;
+        letter-spacing: 0.28em;
+      }
+      h1 {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: 27px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+      }
+      .lead {
+        margin: 16px auto 0;
+        max-width: 330px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.8;
+      }
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin: 26px 0 0;
+        padding: 9px 16px;
+        color: #b9c8e0;
+        border: 1px solid rgba(147, 237, 220, 0.16);
+        border-radius: 999px;
+        background: rgba(147, 237, 220, 0.06);
+        font-size: 11.5px;
+        letter-spacing: 0.04em;
+      }
+      .status::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 10px rgba(147, 237, 220, 0.8);
+        animation: pulse 1.4s ease-in-out infinite;
+      }
+      .fallback {
+        display: block;
+        margin-top: 22px;
+        color: var(--muted);
+        font-size: 11.5px;
+        text-underline-offset: 4px;
+      }
+      .fallback:hover {
+        color: var(--accent);
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.35;
+          transform: scale(0.85);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .status::before {
+          animation: none;
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="mark" aria-hidden="true">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10.2" stroke="currentColor" stroke-opacity=".22" stroke-width="1" />
+          <path
+            d="M12 2.7c.9 4.6 1.7 5.4 6.3 6.3-4.6.9-5.4 1.7-6.3 6.3-.9-4.6-1.7-5.4-6.3-6.3 4.6-.9 5.4-1.7 6.3-6.3Z"
+            fill="currentColor"
+            transform="translate(0 3.2)"
+          />
+          <circle cx="18.8" cy="5.6" r="1" fill="currentColor" opacity=".65" />
+          <circle cx="5.2" cy="18.4" r=".8" fill="currentColor" opacity=".4" />
+        </svg>
+      </div>
+      <p class="eyebrow">GLIMMER · DEMO</p>
+      <h1>正在准备演示星空</h1>
+      <p class="lead">
+        会先清理旧版应用缓存，再载入 14 束示例微光。<br />
+        演示数据只存在于当前页面，不会保存或覆盖你的真实记录。
+      </p>
+      <p class="status" id="status" role="status">正在更新缓存…</p>
+      <a class="fallback" id="fallback" href="../app/?demo=1">如果长时间没有跳转，点这里进入演示</a>
+      <noscript>
+        <p class="lead">需要开启 JavaScript 才能进入演示版。</p>
+      </noscript>
+    </main>
+
+    <script>
+      (() => {
+        const status = document.getElementById('status');
+        const fallback = document.getElementById('fallback');
+        const target = new URL('../app/', window.location.href);
+        target.searchParams.set('demo', '1');
+        target.searchParams.set('t', Date.now().toString(36));
+        fallback.href = target.toString();
+
+        const redirect = () => window.location.replace(target.toString());
+
+        const cleanup = async () => {
+          if ('serviceWorker' in navigator) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(
+              registrations
+                .filter((registration) => registration.scope.includes('/app/'))
+                .map((registration) => registration.unregister()),
+            );
+          }
+          if ('caches' in window) {
+            const keys = await caches.keys();
+            // 只清理本应用的缓存，避免影响同一域名下的其他 GitHub Pages 项目。
+            const appKeys = keys.filter((key) => key.includes('/app/') || key.includes('glimmer'));
+            await Promise.all(appKeys.map((key) => caches.delete(key)));
+          }
+        };
+
+        Promise.race([
+          cleanup(),
+          new Promise((resolve) => window.setTimeout(resolve, 2500)),
+        ])
+          .catch(() => {
+            // 清理失败时仍然进入演示，避免把用户卡在中间页。
+          })
+          .then(() => {
+            status.textContent = '正在进入演示…';
+            redirect();
+          });
+      })();
+    </script>
+  </body>
+</html>
